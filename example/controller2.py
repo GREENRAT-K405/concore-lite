@@ -1,20 +1,25 @@
 import numpy as np
+from ast import literal_eval
 import concore
 
-ysp = 3.0
+try:
+   ysp = literal_eval(open("ysp.txt").read())
+except:
+   ysp = 3.0
 
-# controller function
 def controller(ym): 
   if ym[0] < ysp:
      return 1.01 * ym
   else:
      return 0.9 * ym
 
-# main
-concore.default_maxtime(150)
+#//main//
+concore.default_maxtime(150) ##maps to-- for i in range(0,150):
 concore.delay = 0.02
 
-# initial values -- transforms to string including the simtime as the 0th entry in the list
+#//initial values-- transforms to string including the simtime as the 0th entry in the list//
+# u = np.array([[0.0]])
+# ym = np.array([[0.0]]) 
 init_simtime_u = "[0.0, 0.0]"
 init_simtime_ym = "[0.0, 0.0]"
 
@@ -26,7 +31,7 @@ while(concore.simtime<concore.maxtime):
     #####
     u = controller(ym)
     #####
-    print(str(concore.simtime) + ". u="+str(u) + "ym="+str(ym))
+    print(str(concore.simtime) + ". u="+str(u) + "ym="+str(ym));
     concore.write(1,"u",list(u.T[0]),delta=0)
 
 print("retry="+str(concore.retrycount))
